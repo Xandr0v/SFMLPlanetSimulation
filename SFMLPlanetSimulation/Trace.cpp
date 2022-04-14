@@ -1,11 +1,12 @@
 #include "Trace.h"
+typedef sf::Vector2<double> Vector2d;
 
-Trace::Trace(sf::Vector2f pos, int lifeTime)
+Trace::Trace(Vector2d pos, int lifeTime)
 {
 	this->pos = pos;
 	this->lifeTime = lifeTime;
-	sf::Vertex vertex(pos, sf::Color::Red);
-	this->vertex = vertex;
+	sf::Vertex vertex(sf::Vector2f(pos.x, pos.y), sf::Color::Red);
+	
 
 }
 void Trace::draw(sf::RenderWindow& window)
@@ -13,12 +14,12 @@ void Trace::draw(sf::RenderWindow& window)
 	window.draw(&vertex, 1, sf::Points);
 }
 
-bool Trace::update()
+void Trace::update()
 {
-	this->lifeTime -= 1;
-	if (lifeTime < 0)
-	{
-		return true;
-	}
-	return false;
+	lifeTime -= 1;
+}
+
+bool Trace::isDead()
+{
+	return (lifeTime < 0);
 }

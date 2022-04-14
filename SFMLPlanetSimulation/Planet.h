@@ -17,12 +17,13 @@ class Planet
 	Vector2d pos, vel, acc;
 	double radius;
 	double mass;
-	static double dt;
-	static double scale;
-	
 
 public:
-	Planet(planetData pl);
+	static double dt;
+	static double scale;
+
+
+	Planet(Vector2d pos, Vector2d vel, double radius, double mass, sf::Color col);
 	void update();
 	void draw(sf::RenderWindow& window);
 	Vector2d getPos();

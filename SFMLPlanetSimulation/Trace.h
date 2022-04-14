@@ -1,13 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+typedef sf::Vector2<double> Vector2d;
+
 class Trace
 {
-	sf::Vector2f pos;
+	Vector2d pos;
 	int lifeTime;
 	sf::Vertex vertex;
 public:
-	Trace(sf::Vector2f pos, int lifeTime);
+	Trace(Vector2d pos, int lifeTime);
 	void draw(sf::RenderWindow& window);
-	bool update();
+	void update();
+	bool isDead();
 };
 

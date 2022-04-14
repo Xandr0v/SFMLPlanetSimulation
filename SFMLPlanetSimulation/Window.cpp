@@ -20,13 +20,17 @@ Window::Window(int x, int y, std::string title, int FPS)
 	window.setView(view);
 	window.setFramerateLimit(FPS);
 
+	sf::Event event;
+	sf::Clock clock;
 }
+
+
 
 
 void Window::update()
 {
-	sf::Event event;
-	sf::Clock clock;
+	isPressed = false;
+	isReleased = false;
 
 	//view setting
 	view.setCenter(camPos);
@@ -41,28 +45,17 @@ void Window::update()
 
 	while (window.pollEvent(event))
 	{
-		switch (event.type)
+		if (event.type == sf::Event::Closed) { window.close(); }
+		if (event.type == sf::Event::MouseButtonPressed) { isPressed = true; }
+		if (event.type == sf::Event::MouseButtonReleased) { isReleased = true; }
+		if (event.type == sf::Event::MouseWheelScrolled)
 		{
-		case sf::Event::Closed:
-			window.close();
-			break;
-		case sf::Event::MouseWheelScrolled:
-			if (event.mouseWheel.x > 0)
-			{
-				this->zoomFactor /= zoomSpeed;
-			} 
-			else if (event.mouseWheel.x < 0)
-			{
-				this->zoomFactor *= zoomSpeed;
-			}
-			break;
-		case sf::Event::KeyPressed:
-			switch (event.key.code)
-			{
-			case sf::Keyboard::Escape:
-				window.close();
-				break;
-			}
+			if (event.mouseWheel.x > 0) { this->zoomFactor /= zoomSpeed; }
+			else if (event.mouseWheel.x < 0) { this->zoomFactor *= zoomSpeed; }
+		}
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Escape)	{ window.close(); }
 		}
 	}
 	
@@ -92,6 +85,17 @@ void Window::update()
 		viewRotate(-camRotationSpeed);
 	}
 }
+
+
+
+sf::Vector2f Window::getMousePos()
+{
+	sf::Vector2i pos = sf::Mouse::getPosition(window);
+	/*pos.y = size.y - pos.y;*/
+	sf::Vector2f wpos = window.mapPixelToCoords(pos);
+	return wpos;
+}
+
 
 
 

@@ -15,14 +15,23 @@ struct Window
 	float camSpeed;
 	float camRotationSpeed;
 	float zoomSpeed;
+	sf::Event event;
+	sf::Clock clock;
+	bool isPressed;
+	bool isReleased;
+
 	
 
 	Window(int x, int y, std::string title, int FPS);
-	
 	void update();
+	sf::Vector2f getMousePos();
+
 	void viewMove(sf::Vector2f vel);
 	void viewRotate(float angle);
 	void viewSetZoom(float factor);
+	
+	
+	
 };
 	
 

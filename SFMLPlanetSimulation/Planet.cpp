@@ -4,15 +4,12 @@ double dt;
 double scale;
 
 //default constructor
-Planet::Planet(planetData pl)
+Planet::Planet(Vector2d pos, Vector2d vel, double radius, double mass, sf::Color col)
 {
-	vel = { 0 ,0 };
-
-	pos = pl.pos;
-	vel = pl.vel;
-	radius = pl.radius;
-	mass = pl.mass;
-	sf::Color col = pl.col;
+	this->pos = pos;
+	this->vel = vel;
+	this->radius = radius;
+	this->mass = mass;
 
 	sf::CircleShape shape;
 	shape.setPosition(pos.x / scale, pos.y / scale);
@@ -34,15 +31,9 @@ void Planet::update()
 	
 }
 
-
-//drawing object using sf::CircleShape
 void Planet::draw(sf::RenderWindow& window)
 {
 	window.draw(shape);
-	
-	
-	
-	
 }
 
 Vector2d Planet::getPos()
@@ -72,17 +63,18 @@ void Planet::gravityCalc(std::vector<Planet>& planetArray)
 					Planet& pl2 = planetArray[j];
 					Vector2d deltaPos = pl2.pos - pl1.pos;
 					double R = pythagor(deltaPos);
+
 					if (R < pl1.radius + pl2.radius)
 					{
-						planetData pl3;
-
-						pl3.pos = ((pl1.pos + pl2.pos) / 2.0 + deltaPos / pythagor(deltaPos) * (pl2.radius / pl1.radius) );
-						pl3.vel = (pl1.vel * pl1.mass + pl2.vel * pl2.mass) / (pl1.mass + pl2.mass);
-						pl3.radius = pythagor(pl1.radius, pl2.radius);
-						pl3.mass = pl1.mass + pl2.mass;
-						pl3.col = sf::Color::Green;
-
-						planetArray.push_back(Planet(pl3));
+						//new planet
+						planetArray.push_back(Planet( //доделать
+							pl1.pos + deltaPos / pythagor(deltaPos) * pl2.radius,
+							(pl1.vel * pl1.mass + pl2.vel * pl2.mass) / (pl1.mass + pl2.mass),
+							pythagor(pl1.radius, pl2.radius),
+							pl1.mass + pl2.mass,
+							sf::Color::Green
+						));
+					
 
 						// i always bigger than j
 						planetArray.erase(planetArray.begin() + i);
@@ -134,8 +126,8 @@ void Planet::planetLines(std::vector<Planet>& planetArray, sf::RenderWindow& win
 			Planet& pl2 = planetArray[j];
 			sf::Vertex line[] =
 			{
-				sf::Vertex(sf::Vector2f(pl1.pos / scale), sf::Color::White),
-				sf::Vertex(sf::Vector2f(pl2.pos / scale), sf::Color::White)
+				sf::Vertex(sf::Vector2f(pl1.pos / scale), sf::Color(50, 50, 50)),
+				sf::Vertex(sf::Vector2f(pl2.pos / scale), sf::Color(50, 50, 50))
 			};
 			window.draw(line, 2, sf::Lines);
 		}
