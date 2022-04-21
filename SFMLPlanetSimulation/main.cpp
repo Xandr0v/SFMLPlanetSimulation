@@ -25,19 +25,23 @@ double Planet::scale = 1000000;
 
 int main()
 {
+
+	
+
 	std::vector<Planet> planetArray;
 	std::vector<Trace> traceArray;
 	double scale = Planet::scale;
 
 
 	//sun
-	planetArray.push_back(Planet(
+
+	/*planetArray.push_back(Planet(
 		Vector2d(0, 0) * scale,
 		Vector2d(0, 0) * scale,
-		696.0 * scale * 100,
+		696.0 * scale * 10,
 		2E30,
 		sf::Color(255, 207, 72)
-	));
+	));*/
 	
 
 
@@ -50,24 +54,32 @@ int main()
 		sf::Color(0, 50, 255)
 	));*/
 
+	//pixels
+	int spawnRadius = 10000;
+	//meters / second
+	int spawnSpeed = 0.01 * scale * 2;
+	int B = 100;
 
-
-	/*int plCount = 1;
+	int plCount = 500;
 	for (int i = 0; i < plCount; i++)
 	{
-		planetData pl;
-		float randSp = 1;
-		float squareSide = 50.f;
-		sf::Vector2f spawnZone = { squareSide, squareSide };
-
-		pl.pos = sf::Vector2f(hash(spawnZone.x) - spawnZone.x / 2.f + w.size.x / 2.f, hash(spawnZone.y) - spawnZone.y / 2.f + w.size.y / 2.f);
-		pl.vel = sf::Vector2f(hash(randSp) - randSp / 2, hash(randSp) - randSp / 2);
+		double randomRadius = hash(spawnRadius) * scale;
+		float randomAngle = hash(360) / radian;
 		
-		pl.radius = 6.371f;
-		pl.mass = 5.97E024;
-		pl.col = sf::Color::White;
-		planetArray.push_back(Planet(pl));
-	}*/
+		double randomSpeed = hash(spawnSpeed) - spawnSpeed / 2.0;
+		float randomSpeedAngle = hash(360) / radian;
+
+		sf::Color randomColor = sf::Color(hash(256 - B) + B, hash(256 - B) + B, hash(256 - B) + B);
+
+		planetArray.push_back(Planet(
+			Vector2d( cosf(randomAngle), sinf(randomAngle) ) * randomRadius,
+			Vector2d( cosf(randomSpeedAngle), sinf(randomSpeedAngle) ) * randomSpeed,
+			6.371 * scale * 5,
+			6E24,
+			randomColor
+		));
+
+	}
 
 	
 
@@ -96,7 +108,7 @@ int main()
 			planetArray.push_back(Planet(
 				Vector2d(mouseWPos.x, mouseWPos.y) * scale,
 				Vector2d(deltaWPos.x, deltaWPos.y),
-				6.371 * scale * 500,
+				6.371 * scale * 10,
 				6E24,
 				sf::Color(0, 50, 255)
 			));

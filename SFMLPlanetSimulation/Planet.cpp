@@ -10,6 +10,7 @@ Planet::Planet(Vector2d pos, Vector2d vel, double radius, double mass, sf::Color
 	this->vel = vel;
 	this->radius = radius;
 	this->mass = mass;
+	this->col = col;
 
 	sf::CircleShape shape;
 	shape.setPosition(pos.x / scale, pos.y / scale);
@@ -34,6 +35,8 @@ void Planet::update()
 void Planet::draw(sf::RenderWindow& window)
 {
 	window.draw(shape);
+	sf::Vertex dot(sf::Vector2f(pos / scale), col);
+	window.draw(&dot, 1, sf::Points);
 }
 
 Vector2d Planet::getPos()
@@ -66,13 +69,16 @@ void Planet::gravityCalc(std::vector<Planet>& planetArray)
 
 					if (R < pl1.radius + pl2.radius)
 					{
+						float plColR = (pl1.col.r + pl2.col.r) / 2;
+						float plColG = (pl1.col.g + pl2.col.g) / 2;
+						float plColB = (pl1.col.b + pl2.col.b) / 2;
 						//new planet
 						planetArray.push_back(Planet( //доделать
 							pl1.pos + deltaPos / pythagor(deltaPos) * pl2.radius,
 							(pl1.vel * pl1.mass + pl2.vel * pl2.mass) / (pl1.mass + pl2.mass),
 							pythagor(pl1.radius, pl2.radius),
 							pl1.mass + pl2.mass,
-							sf::Color::Green
+							sf::Color(plColR, plColG, plColB)
 						));
 					
 

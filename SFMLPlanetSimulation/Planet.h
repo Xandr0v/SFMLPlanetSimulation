@@ -17,6 +17,7 @@ class Planet
 	Vector2d pos, vel, acc;
 	double radius;
 	double mass;
+	sf::Color col;
 
 public:
 	static double dt;

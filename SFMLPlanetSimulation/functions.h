@@ -9,14 +9,7 @@
 using namespace std::chrono;
 typedef sf::Vector2<double> Vector2d;
 
-struct planetData
-{
-	Vector2d pos;
-	Vector2d vel;
-	float radius;
-	float mass;
-	sf::Color col;
-};
+
 namespace m
 {
 	template<typename T>
